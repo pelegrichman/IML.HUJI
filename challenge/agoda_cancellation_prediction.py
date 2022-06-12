@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     # Load data
     df, cancellation_labels = load_data("../datasets/agoda_cancellation_train.csv")
-    train_X, train_y, test_X, test_y = split_train_test(df, cancellation_labels)
+    train_X, train_y, test_X, test_y = split_train_test(df, cancellation_labels, n_samples=int)
 
     # Fit model over data
     estimator = AgodaCancellationEstimator().fit(train_X, train_y)

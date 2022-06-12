@@ -1,13 +1,13 @@
 from __future__ import annotations
 from typing import NoReturn
-from . import LinearRegression
-from ...base import BaseEstimator
+from IMLearn.learners.regressors.linear_regression import LinearRegression
+from IMLearn.base import BaseEstimator
 import numpy as np
 
 
 class PolynomialFitting(BaseEstimator):
     """
-    Polynomial Fitting using Least Squares estimation
+    Polynomial Fitting using Least Squares estimations
     """
 
     def __init__(self, k: int) -> PolynomialFitting:
@@ -20,8 +20,8 @@ class PolynomialFitting(BaseEstimator):
             Degree of polynomial to fit
         """
         super().__init__()
-        self.deg: int = k
-
+        self.linear_regression = LinearRegression()
+        self.k = k
 
     def _fit(self, X: np.ndarray, y: np.ndarray) -> NoReturn:
         """
@@ -35,8 +35,8 @@ class PolynomialFitting(BaseEstimator):
         y : ndarray of shape (n_samples, )
             Responses of input data to fit to
         """
-        X = self.__transform(X)
-
+        x_transform = self.__transform(X.ravel())
+        self.linear_regression.fit(x_transform, y)
 
     def _predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -52,7 +52,8 @@ class PolynomialFitting(BaseEstimator):
         responses : ndarray of shape (n_samples, )
             Predicted responses of given samples
         """
-        raise NotImplementedError()
+        x_transform = self.__transform(X.ravel())
+        return self.linear_regression.predict(x_transform)
 
     def _loss(self, X: np.ndarray, y: np.ndarray) -> float:
         """
@@ -71,7 +72,8 @@ class PolynomialFitting(BaseEstimator):
         loss : float
             Performance under MSE loss function
         """
-        raise NotImplementedError()
+        x_transform = self.__transform(X)
+        return self.linear_regression.loss(x_transform, y)
 
     def __transform(self, X: np.ndarray) -> np.ndarray:
         """
@@ -86,4 +88,5 @@ class PolynomialFitting(BaseEstimator):
         transformed: ndarray of shape (n_samples, k+1)
             Vandermonde matrix of given samples up to degree k
         """
-        return np.vander(X, N=self.deg, increasing=True)
+        return np.vander(X, N=self.k + 1)
+

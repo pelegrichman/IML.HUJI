@@ -9,7 +9,7 @@ BaseEstimator.py file
 """
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import NoReturn
+from typing import NoReturn, Union
 import numpy as np
 
 
@@ -151,7 +151,7 @@ class BaseEstimator(ABC):
         """
         raise NotImplementedError()
 
-    def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
+    def fit_predict(self, X: np.ndarray, y: np.ndarray) -> Union[object, np.ndarray]:
         """
         Fit an estimator over given input data and predict responses for given samples
 
