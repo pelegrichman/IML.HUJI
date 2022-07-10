@@ -36,14 +36,9 @@ def misclassification_error(y_true: np.ndarray, y_pred: np.ndarray, normalize: b
     -------
     Misclassification of given predictions
     """
-    loss: float = 0
-    for i in range(y_true.shape[0]):
-        if y_true[i] * y_pred[i] <= 0:
-            loss += 1
-
     if normalize:
-        return loss / len(y_true)
-    return loss
+        return np.mean(y_true == y_pred)
+    return np.sum(y_true == y_pred)
 
 
 def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -62,8 +57,6 @@ def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     Accuracy of given predictions
     """
     # Return true positive + true negative / (total positive + total negative)
-
-
 
     # for t_label, pred_label in zip(y_true, y_pred):
     #     # true label = positive
